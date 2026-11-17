@@ -1,0 +1,2 @@
+[console_scripts]
+ae = agent_eval.cli:main

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 
+import pytest
 from conftest import unified_patch
 
 from agent_eval.domain import (
@@ -99,3 +100,39 @@ def test_ingest_real_patch_passes(problem, dataset, tmp_path) -> None:
     assert trace.passed
     assert trace.test_history[-1].status == TestStatus.PASS
     assert repository.get_attribution(trace.run_id) is None
+
+
+def test_ingest_rejects_scripted_runs(problem, dataset, tmp_path) -> None:
+    raw = {
+        "run_id": "scripted-run",
+        "strategy": "S2",
+        "problem_id": "sample",
+        "model": "scripted",
+        "passed": True,
+        "attempts": [
+            {
+                "attempt": 1,
+                "steps": [],
+                "patch_text": unified_patch(problem, "def add(a, b):\n    return a + b\n"),
+                "changed_files": [problem.entry_path],
+                "test_report": {"returncode": 0, "passed": 1, "failed": 0},
+                "passed": True,
+            }
+        ],
+        "meta": {},
+    }
+    source = tmp_path / "scripted.db"
+    import sqlite3
+    with sqlite3.connect(source) as connection:
+        connection.execute("CREATE TABLE runs (run_id TEXT, started_at TEXT, trace_json TEXT)")
+        connection.execute(
+            "INSERT INTO runs VALUES (?, ?, ?)",
+            ("scripted-run", "2026-01-01T00:00:00+00:00", json.dumps(raw)),
+        )
+    repository = EvaluationRepository(tmp_path / "eval.db")
+    service = EvaluationService(dataset, repository, ObjectiveGrader(timeout_s=10))
+
+    with pytest.raises(ValueError, match="scripted"):
+        service.ingest(agent_name="ours", source=source, experiment_id="scripted-exp")
+    assert repository.get_run("scripted-run") is None
+

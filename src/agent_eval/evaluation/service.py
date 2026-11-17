@@ -58,7 +58,8 @@ class EvaluationService:
             if original.problem_id not in self.dataset.problems:
                 warnings.warn(
                     f"run {original.run_id} 的题目 {original.problem_id} 不在当前评测集中，"
-                    "可能与项目一当时使用的数据集版本不一致。"
+                    "可能与项目一当时使用的数据集版本不一致。",
+                    stacklevel=2,
                 )
             trace = self.regrade_trace(original)
             self.repository.save_run(trace)

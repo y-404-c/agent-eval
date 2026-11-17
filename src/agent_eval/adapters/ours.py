@@ -116,6 +116,8 @@ class OursAdapter(TraceAdapter):
                 "upstream_error_category": str(raw.get("error_category", "")),
             }
         )
+        if dataset_digest:
+            meta["dataset_digest"] = dataset_digest
         return RunTrace(
             run_id=str(raw["run_id"]),
             agent_name=self.name,

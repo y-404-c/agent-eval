@@ -119,6 +119,8 @@ class MiniSweAgentAdapter(TraceAdapter):
             "model": info.get("model", raw.get("model", "")),
             "stop_reason": raw.get("stop_reason", info.get("stop_reason", "")),
         }
+        if dataset_digest:
+            metadata["dataset_digest"] = dataset_digest
         return RunTrace(
             run_id=run_id,
             agent_name=self.name,

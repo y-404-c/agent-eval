@@ -81,7 +81,7 @@ class ReportGenerator:
             "metrics": [item.model_dump(mode="json") for item in metrics],
             "failure_clusters": clusters,
             "bad_cases": bad_cases,
-            "llm_audit": self.repository.audit_agreement(),
+            "manual_audit": self.repository.audit_agreement(run_ids),
             "objective_metric": "最终 patch 应用到原始源码后，官方 pytest 全绿",
         }
         (report_dir / "metrics.json").write_text(
@@ -299,7 +299,7 @@ class ReportGenerator:
                 f"- `{case['agent_name']}` / `{case['problem_id']}` / `{case['category']}`："
                 f"{case['rationale']} [trace]({case['trace_link']})"
             )
-        audit = payload["llm_audit"]
+        audit = payload["manual_audit"]
         lines.extend(
             [
                 "",

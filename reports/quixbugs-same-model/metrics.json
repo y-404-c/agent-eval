@@ -1,0 +1,235 @@
+{
+  "experiment_id": "quixbugs-final-q38",
+  "generated_at": "2026-11-19T13:53:13.323958+00:00",
+  "dataset_digest": "8255275613efbbc4d670fb94c2e98380adacc3ff056d8b80d9c8ae7a8d38fb16",
+  "dataset_version": [
+    "v1"
+  ],
+  "common_problem_ids": [
+    "bitcount",
+    "breadth_first_search",
+    "bucketsort",
+    "depth_first_search",
+    "detect_cycle",
+    "find_first_in_sorted",
+    "find_in_sorted",
+    "flatten",
+    "gcd",
+    "get_factors",
+    "is_valid_parenthesization",
+    "kheapsort",
+    "kth",
+    "lcs_length",
+    "levenshtein",
+    "lis",
+    "longest_common_subsequence",
+    "max_sublist_sum",
+    "mergesort",
+    "minimum_spanning_tree",
+    "next_palindrome",
+    "next_permutation",
+    "pascal",
+    "possible_change"
+  ],
+  "warnings": [
+    "ours/S0 有 16 题未纳入横向对比（非共同题）。",
+    "ours/S1 有 16 题未纳入横向对比（非共同题）。",
+    "ours/S2 有 16 题未纳入横向对比（非共同题）。",
+    "ours/S3 有 16 题未纳入横向对比（非共同题）。",
+    "ours/S4 有 16 题未纳入横向对比（非共同题）。"
+  ],
+  "metrics": [
+    {
+      "agent_name": "mini-swe-agent",
+      "strategy": "-",
+      "run_count": 24,
+      "problem_count": 24,
+      "repeat_count": 1,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": null,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.8620237953250198,
+        "upper": 1.0
+      },
+      "localization_top1": 0.375,
+      "localization_top3": 1.0,
+      "avg_tokens_per_run": 0.0,
+      "avg_tokens_per_problem": 0.0,
+      "latency_p50_ms": 2136.5,
+      "latency_p95_ms": 12666.04999999999,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S0",
+      "run_count": 72,
+      "problem_count": 24,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9493488274035422,
+        "upper": 1.0
+      },
+      "localization_top1": 0.7083333333333334,
+      "localization_top3": 0.7222222222222222,
+      "avg_tokens_per_run": 5164.333333333333,
+      "avg_tokens_per_problem": 15493.0,
+      "latency_p50_ms": 4401.0,
+      "latency_p95_ms": 30672.5,
+      "retry_success_rate": 1.0,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S1",
+      "run_count": 72,
+      "problem_count": 24,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9493488274035422,
+        "upper": 1.0
+      },
+      "localization_top1": 0.9027777777777778,
+      "localization_top3": 0.9027777777777778,
+      "avg_tokens_per_run": 5295.861111111111,
+      "avg_tokens_per_problem": 15887.583333333334,
+      "latency_p50_ms": 3913.5,
+      "latency_p95_ms": 38088.15,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S2",
+      "run_count": 72,
+      "problem_count": 24,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9493488274035422,
+        "upper": 1.0
+      },
+      "localization_top1": 0.9027777777777778,
+      "localization_top3": 0.9027777777777778,
+      "avg_tokens_per_run": 5939.944444444444,
+      "avg_tokens_per_problem": 17819.833333333332,
+      "latency_p50_ms": 4222.0,
+      "latency_p95_ms": 37266.99999999996,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S3",
+      "run_count": 72,
+      "problem_count": 24,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9493488274035422,
+        "upper": 1.0
+      },
+      "localization_top1": 0.9444444444444444,
+      "localization_top3": 0.9583333333333334,
+      "avg_tokens_per_run": 8286.625,
+      "avg_tokens_per_problem": 24859.875,
+      "latency_p50_ms": 4418.0,
+      "latency_p95_ms": 38602.39999999995,
+      "retry_success_rate": 1.0,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S4",
+      "run_count": 72,
+      "problem_count": 24,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9493488274035422,
+        "upper": 1.0
+      },
+      "localization_top1": 0.9583333333333334,
+      "localization_top3": 0.9583333333333334,
+      "avg_tokens_per_run": 7856.791666666667,
+      "avg_tokens_per_problem": 23570.375,
+      "latency_p50_ms": 4914.5,
+      "latency_p95_ms": 39287.599999999984,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    }
+  ],
+  "failure_clusters": [],
+  "bad_cases": [],
+  "manual_audit": {
+    "sample_count": 0,
+    "agreement_count": 0,
+    "agreement_rate": null
+  },
+  "objective_metric": "最终 patch 应用到原始源码后，官方 pytest 全绿"
+}

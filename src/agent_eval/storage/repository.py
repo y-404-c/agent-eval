@@ -226,8 +226,18 @@ class EvaluationRepository:
             for row in rows
         ]
 
-    def audit_agreement(self) -> dict[str, int | float | None]:
+    def audit_agreement(
+        self, run_ids: list[str] | None = None
+    ) -> dict[str, int | float | None]:
+        """抽检一致率。传入 run_ids 时只统计该实验/报告覆盖的 run。
+
+        不传时保持旧的全局行为，兼容 CLI 的 `audit agreement` 命令；
+        报告必须传 run_ids，否则会把历史实验的抽检串到新报告上。
+        """
         audits = self.list_audits()
+        if run_ids is not None:
+            scope = set(run_ids)
+            audits = [record for record in audits if record.run_id in scope]
         agreements = sum(record.agrees for record in audits)
         return {
             "sample_count": len(audits),

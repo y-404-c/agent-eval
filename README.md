@@ -164,7 +164,11 @@ ae --dataset data/quixbugs.v1.jsonl report \
 
 ### 模型与对比公平性
 
-本框架的横向对比在**同一模型**上进行：ours 与 mini-swe-agent 均使用 `qwen3.8-flash`（OpenAI 兼容端点 `https://dashscope.aliyuncs.com/compatible-mode/v1`），`temperature=0`。mini-swe-agent 的轨迹由 `scripts/mini_swe_runner.py` 生成，轨迹 `info.model` 字段记录实际模型。`reports/` 中早期 `quixbugs-compare-v1` 为 `qwen-plus` 时代的历史快照，不代表最终结论；最终报告为 `quixbugs-final`。
+本框架的横向对比在**同一模型**上进行：ours 与 mini-swe-agent 均使用 `qwen3.8-flash`（OpenAI 兼容端点 `https://dashscope.aliyuncs.com/compatible-mode/v1`），`temperature=0`。mini-swe-agent 的 40 条轨迹由 `scripts/mini_swe_runner.py` 生成，轨迹 `info.model` 字段记录实际模型。
+
+**最终报告：`reports/quixbugs-same-model/`**（同模型，40 题完整对比）。核心结论：双方 pass@1 均为 100%，正确率已触及天花板；有区分度的是**过程指标**——ours 的定位 Top-1 为 72.5%~95.8%，mini-swe-agent 为 32.5%；P50 步骤延迟 ours 3872~4824 ms、mini-swe 2323 ms。报告生成器在 pass@1 打平时会自动输出这些过程差异，而不是留下一堆"0.00 个百分点"。
+
+**历史快照（非最终结论）**：`reports/quixbugs-final_*` 是 `qwen-plus` 时代的结果（mini-swe 87.5%、5 条失败归因、3 个聚类、2 个 bad case、5 条抽检一致率 100%）。它仍有方法演示价值——展示了框架的失败归因与抽检能力，但**因为双方模型不同，不能用来论证"我的 Agent 比基线强"**。引用时必须说明是哪一版。
 
 ## 5. 归因规则与人工抽检
 

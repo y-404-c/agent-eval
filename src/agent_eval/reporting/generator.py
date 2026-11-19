@@ -340,10 +340,28 @@ class ReportGenerator:
             else:
                 category_text = "两组均无失败，没有错误分布差异"
             pass_delta = (left.pass_at_1 - right.pass_at_1) * 100
-            conclusions.append(
+            line = (
                 f"- `{_label(left)}` 相对 `{_label(right)}` 的 pass@1 差值为 "
-                f"{pass_delta:+.2f} 个百分点；{category_text}。"
+                f"{pass_delta:+.2f} 个百分点；{category_text}"
             )
+            # pass@1 打平时，正确率没有区分度，但过程指标可能有——把差异显式讲出来，
+            # 否则报告只剩一堆"0.00 个百分点"，掩盖了定位/成本/延迟上的真实差别。
+            if abs(pass_delta) < 1e-9:
+                loc_delta = (left.localization_top1 - right.localization_top1) * 100
+                details: list[str] = []
+                if abs(loc_delta) >= 1e-9:
+                    details.append(f"定位 Top-1 差 {loc_delta:+.2f} 个百分点")
+                # token=0 表示原日志未记录，不参与对比（未知≠零消耗）
+                if left.avg_tokens_per_run > 0 and right.avg_tokens_per_run > 0:
+                    tok_delta = left.avg_tokens_per_run - right.avg_tokens_per_run
+                    details.append(f"平均 token/题 差 {tok_delta:+.1f}")
+                if left.latency_p50_ms and right.latency_p50_ms:
+                    lat_delta = left.latency_p50_ms - right.latency_p50_ms
+                    details.append(f"P50 步骤延迟差 {lat_delta:+.1f} ms")
+                if details:
+                    line += "；但两者过程不同：" + "，".join(details)
+                line += "（pass@1 已触及天花板，差异需看过程指标）"
+            conclusions.append(line + "。")
         return conclusions
 
     def _new_report_dir(self, experiment_id: str) -> Path:

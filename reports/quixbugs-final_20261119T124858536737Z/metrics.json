@@ -1,6 +1,6 @@
 {
   "experiment_id": "quixbugs-final",
-  "generated_at": "2026-11-19T12:38:55.649803+00:00",
+  "generated_at": "2026-11-19T12:48:58.548388+00:00",
   "dataset_digest": "8255275613efbbc4d670fb94c2e98380adacc3ff056d8b80d9c8ae7a8d38fb16",
   "dataset_version": [
     "v1"
@@ -320,9 +320,9 @@
     }
   ],
   "llm_audit": {
-    "sample_count": 0,
-    "agreement_count": 0,
-    "agreement_rate": null
+    "sample_count": 5,
+    "agreement_count": 5,
+    "agreement_rate": 1.0
   },
   "objective_metric": "最终 patch 应用到原始源码后，官方 pytest 全绿"
 }

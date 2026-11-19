@@ -54,6 +54,24 @@ src/agent_eval/
 python -m pip install -e ".[dev,demo]"
 ```
 
+**关键：指定带 pytest 的解释器。** grader 会在独立目录里执行官方 pytest；若系统 PATH 的 `python` 没有 pytest，所有 run 都会被判失败。设置 `AGENT_EVAL_PYTHON_EXECUTABLE` 指向已安装 pytest 的解释器：
+
+```bash
+# Windows（本项目实测配置）
+export AGENT_EVAL_PYTHON_EXECUTABLE=.venv/Scripts/python.exe
+# Linux/macOS
+export AGENT_EVAL_PYTHON_EXECUTABLE=.venv/bin/python
+```
+
+其余可选项见 `.env.example`（复制为 `.env` 生效）。LLM 辅助归因是可选分支，仅 `attribute --llm` 需要，默认规则归因不访问任何外部接口。
+
+**数据快照与复现**：`var/agent_eval.db` 被 `.gitignore` 排除，但两个 Agent 的**原始轨迹快照都随仓库提供**，clone 后自包含：
+
+- ours：`data/traces/ours-quixbugs-final.jsonl`（项目一 600 条原生 trace，从 `runs.db` 导出，适配器原生支持 JSONL）
+- mini-swe-agent：`trajectories/mini-swe-agent/*.traj.json`（40 条，模型字段 `qwen3.8-flash`）
+
+按第 3、4 节的 ingest 命令导入这两个来源并重跑 `attribute`、`report`，即可从零重建 `reports/` 中的全部数字；metrics.json 与 CSV 是权威来源。
+
 从官方 QuixBugs 目录导入。导入器只读取 buggy 源码、官方测试和测试数据，**不读取或保存 correct patch**：
 
 ```bash
@@ -80,22 +98,31 @@ ae --dataset data/quixbugs.v1.jsonl dataset check-leakage \
 ```bash
 ae --dataset data/quixbugs.v1.jsonl ingest \
   --agent ours \
-  --source /path/to/coding-agent/var/runs.db \
-  --experiment quixbugs-s4-r3
+  --source data/traces/ours-quixbugs-final.jsonl \
+  --experiment quixbugs-final
 ```
 
-适配器直接读取项目一 `runs.trace_json`，展开内部 attempts。内部重试不会冒充独立生成；`repeat_index` 映射为独立生成序号。
+适配器读取项目一原生 trace（JSONL 或 `runs.db` 均可），展开内部 attempts。内部重试不会冒充独立生成；`repeat_index` 映射为独立生成序号。
 
 ### mini-SWE-agent
 
 ```bash
 ae --dataset data/quixbugs.v1.jsonl ingest \
   --agent mini-swe-agent \
-  --source /path/to/mini-swe-agent/trajectories \
-  --experiment quixbugs-mini-r3
+  --source trajectories/mini-swe-agent \
+  --experiment quixbugs-final
 ```
 
-适配器支持常见 `info + messages` JSON、`tool_calls`、bash 代码块及显式 `steps` 结构。`info.submission` 或最后的 `git diff` 作为最终 patch；`submitted` 不会被误判为测试通过。日志没有的 token/latency 记为 0（未知），不虚构。单文件缺少题号时可加 `--problem-id`，重复序号可加 `--attempt-index` 或 `--attempt-offset`。
+轨迹由 `scripts/mini_swe_runner.py` 生成，可用同脚本复现：
+
+```bash
+.venv-mini/Scripts/python.exe scripts/mini_swe_runner.py \
+  --model qwen3.8-flash \
+  --base-url https://dashscope.aliyuncs.com/compatible-mode/v1 \
+  --output trajectories/mini-swe-agent
+```
+
+适配器支持常见 `info + messages` JSON、`tool_calls`、bash 代码块及显式 `steps` 结构。`info.submission` 或最后的 `git diff` 作为最终 patch；`submitted` 不会被误判为测试通过。**token**：原日志未记录 token 字段时记为 0（未知），不虚构。**延迟**：优先用显式 `latency_ms`，缺失时按相邻 message 的 Unix 时间戳差推算（毫秒），这是从原始日志客观恢复的近似值。单文件缺少题号时可加 `--problem-id`，重复序号可加 `--attempt-index` 或 `--attempt-offset`。
 
 两条命令都会执行同一流程：**适配 → 应用 patch → 官方测试复测 → SQLite 落库 → 自动归因**。原始日志里的 pass/fail 仅保存在 `metadata.logged_test_result`，不参与最终评分。修改官方测试、目录穿越和非法 patch 均判失败。
 
@@ -124,6 +151,20 @@ ae --dataset data/quixbugs.v1.jsonl report \
 | 错误分布 | 仅失败 run，优先使用已保存的归因类别 |
 
 同一配置多次运行取均值并报告方差，用于对抗 LLM 随机性；`temperature=0` 也不能替代重复实验。
+
+### 与项目一（coding-agent）的数字口径差异
+
+两个项目对同一批 600 条 trace 报出的 pass@1 可能不同，原因是**统计层级不同，不是数字冲突**：
+
+- 项目一报告的 pass@1 是**单条 trace 首轮 attempt** 的通过率（S0/S3 为 98.3%）。
+- 本框架报告的 pass@1 是**官方 pytest 在原始源码副本上复测**的结果，且按独立生成序号取每题最小 `attempt_index`（全部为 100%）。
+- 本框架不信任 trace 里自报的通过状态：patch 会被重新应用到干净副本并重跑官方测试，`submitted` 状态绝不视为通过。
+
+因此"项目一 98.3% / 项目二 100%"是同一批数据在两个层级的读数，引用时必须带上口径说明。
+
+### 模型与对比公平性
+
+本框架的横向对比在**同一模型**上进行：ours 与 mini-swe-agent 均使用 `qwen3.8-flash`（OpenAI 兼容端点 `https://dashscope.aliyuncs.com/compatible-mode/v1`），`temperature=0`。mini-swe-agent 的轨迹由 `scripts/mini_swe_runner.py` 生成，轨迹 `info.model` 字段记录实际模型。`reports/` 中早期 `quixbugs-compare-v1` 为 `qwen-plus` 时代的历史快照，不代表最终结论；最终报告为 `quixbugs-final`。
 
 ## 5. 归因规则与人工抽检
 

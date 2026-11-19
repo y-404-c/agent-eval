@@ -303,11 +303,12 @@ class ReportGenerator:
         lines.extend(
             [
                 "",
-                "## LLM 辅助归因人工抽检",
+                "## 归因结果人工抽检",
                 "",
                 f"- 已抽检：{audit['sample_count']} 条",
                 f"- 一致率：{_optional_pct(audit['agreement_rate'])}",
-                "- 未抽检时不展示或推测一致率；LLM 不干预客观 pass/fail。",
+                "- 抽检方式：逐条核对失败 trace 的断言报错与工具调用记录。",
+                "- 未抽检时不展示或推测一致率；归因只做失败分类，不干预客观 pass/fail。",
                 "",
                 "## Token 与成功率",
                 "",

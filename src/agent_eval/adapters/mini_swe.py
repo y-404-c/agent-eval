@@ -160,7 +160,7 @@ class MiniSweAgentAdapter(TraceAdapter):
                             observation=observation,
                             thought=content,
                             tokens=_tokens(message),
-                            latency_ms=_latency(message),
+                            latency_ms=_latency(message, messages, index),
                         )
                     )
                 continue
@@ -180,7 +180,7 @@ class MiniSweAgentAdapter(TraceAdapter):
                         observation=observation,
                         thought=_COMMAND_RE.sub("", content).strip(),
                         tokens=_tokens(message),
-                        latency_ms=_latency(message),
+                        latency_ms=_latency(message, messages, index),
                         ok=not _command_failed(observation),
                         error=observation[-500:] if _command_failed(observation) else None,
                     )
@@ -310,8 +310,34 @@ def _tokens(message: dict[str, Any]) -> int:
     return int(total)
 
 
-def _latency(message: dict[str, Any]) -> int:
-    return int(message.get("latency_ms", message.get("duration_ms", 0)) or 0)
+def _latency(
+    message: dict[str, Any],
+    messages: list[Any] | None = None,
+    index: int = 0,
+) -> int:
+    """优先用显式时延字段；缺失时按相邻消息时间戳差推算（毫秒）。
+
+    mini-SWE-agent 的轨迹不写 latency_ms，但每条 message 带 Unix 秒级
+    timestamp。以当前 assistant 消息与上一条消息的时间差作为该步耗时，
+    这是可从原始日志客观恢复的近似值，不虚构。
+    """
+    explicit = message.get("latency_ms", message.get("duration_ms"))
+    if explicit:
+        return int(explicit)
+    if not messages or index <= 0:
+        return 0
+    current = message.get("timestamp")
+    previous = messages[index - 1]
+    if current is None or not isinstance(previous, dict):
+        return 0
+    prev_ts = previous.get("timestamp")
+    if prev_ts is None:
+        return 0
+    try:
+        delta_ms = (float(current) - float(prev_ts)) * 1000
+    except (TypeError, ValueError):
+        return 0
+    return max(0, int(delta_ms))
 
 
 def _parse_test_output(output: str, attempt: int) -> TestOutcome | None:

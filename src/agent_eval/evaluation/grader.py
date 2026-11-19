@@ -23,11 +23,17 @@ class ObjectiveGrader:
     def __init__(
         self,
         *,
-        python_executable: str = "python",
+        python_executable: str | None = None,
         timeout_s: float = 20.0,
         max_output_chars: int = 12000,
     ) -> None:
-        self.python_executable = python_executable
+        # 默认从环境变量读取带 pytest 的解释器；未设置时回退到 "python"。
+        # 这样直接构造 ObjectiveGrader() 的调用方（含单元测试）也能复现评测。
+        self.python_executable = (
+            python_executable
+            or os.getenv("AGENT_EVAL_PYTHON_EXECUTABLE")
+            or "python"
+        )
         self.timeout_s = timeout_s
         self.max_output_chars = max_output_chars
 

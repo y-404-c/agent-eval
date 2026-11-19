@@ -1,0 +1,328 @@
+{
+  "experiment_id": "quixbugs-final",
+  "generated_at": "2026-11-19T12:38:55.649803+00:00",
+  "dataset_digest": "8255275613efbbc4d670fb94c2e98380adacc3ff056d8b80d9c8ae7a8d38fb16",
+  "dataset_version": [
+    "v1"
+  ],
+  "common_problem_ids": [
+    "bitcount",
+    "breadth_first_search",
+    "bucketsort",
+    "depth_first_search",
+    "detect_cycle",
+    "find_first_in_sorted",
+    "find_in_sorted",
+    "flatten",
+    "gcd",
+    "get_factors",
+    "hanoi",
+    "is_valid_parenthesization",
+    "kheapsort",
+    "knapsack",
+    "kth",
+    "lcs_length",
+    "levenshtein",
+    "lis",
+    "longest_common_subsequence",
+    "max_sublist_sum",
+    "mergesort",
+    "minimum_spanning_tree",
+    "next_palindrome",
+    "next_permutation",
+    "pascal",
+    "possible_change",
+    "powerset",
+    "quicksort",
+    "reverse_linked_list",
+    "rpn_eval",
+    "shortest_path_length",
+    "shortest_path_lengths",
+    "shortest_paths",
+    "shunting_yard",
+    "sieve",
+    "sqrt",
+    "subsequences",
+    "to_base",
+    "topological_ordering",
+    "wrap"
+  ],
+  "warnings": [],
+  "metrics": [
+    {
+      "agent_name": "mini-swe-agent",
+      "strategy": "-",
+      "run_count": 40,
+      "problem_count": 40,
+      "repeat_count": 1,
+      "k": 3,
+      "pass_at_1": 0.875,
+      "pass_at_k": 0.875,
+      "repeat_pass_rates": [
+        0.875
+      ],
+      "mean_repeat_pass_rate": 0.875,
+      "repeat_pass_rate_variance": null,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.738878801611489,
+        "upper": 0.945404997490546
+      },
+      "localization_top1": 1.0,
+      "localization_top3": 1.0,
+      "avg_tokens_per_run": 0.0,
+      "avg_tokens_per_problem": 0.0,
+      "latency_p50_ms": null,
+      "latency_p95_ms": null,
+      "retry_success_rate": null,
+      "failure_count": 5,
+      "error_counts": {
+        "assertion_mismatch": 4,
+        "tool_failure": 1
+      },
+      "error_distribution": {
+        "assertion_mismatch": 0.8,
+        "tool_failure": 0.2
+      }
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S0",
+      "run_count": 120,
+      "problem_count": 40,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9689808335812966,
+        "upper": 1.0
+      },
+      "localization_top1": 0.725,
+      "localization_top3": 0.7416666666666667,
+      "avg_tokens_per_run": 5266.725,
+      "avg_tokens_per_problem": 15800.175,
+      "latency_p50_ms": 4195.0,
+      "latency_p95_ms": 30044.79999999998,
+      "retry_success_rate": 1.0,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S1",
+      "run_count": 120,
+      "problem_count": 40,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9689808335812966,
+        "upper": 1.0
+      },
+      "localization_top1": 0.8916666666666667,
+      "localization_top3": 0.8916666666666667,
+      "avg_tokens_per_run": 5255.191666666667,
+      "avg_tokens_per_problem": 15765.575,
+      "latency_p50_ms": 3872.0,
+      "latency_p95_ms": 27085.799999999967,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S2",
+      "run_count": 120,
+      "problem_count": 40,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9689808335812966,
+        "upper": 1.0
+      },
+      "localization_top1": 0.925,
+      "localization_top3": 0.925,
+      "avg_tokens_per_run": 6042.0,
+      "avg_tokens_per_problem": 18126.0,
+      "latency_p50_ms": 4355.0,
+      "latency_p95_ms": 32642.799999999992,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S3",
+      "run_count": 120,
+      "problem_count": 40,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9689808335812966,
+        "upper": 1.0
+      },
+      "localization_top1": 0.9583333333333334,
+      "localization_top3": 0.9666666666666667,
+      "avg_tokens_per_run": 8370.475,
+      "avg_tokens_per_problem": 25111.425,
+      "latency_p50_ms": 4525.0,
+      "latency_p95_ms": 36481.75,
+      "retry_success_rate": 1.0,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    },
+    {
+      "agent_name": "ours",
+      "strategy": "S4",
+      "run_count": 120,
+      "problem_count": 40,
+      "repeat_count": 3,
+      "k": 3,
+      "pass_at_1": 1.0,
+      "pass_at_k": 1.0,
+      "repeat_pass_rates": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean_repeat_pass_rate": 1.0,
+      "repeat_pass_rate_variance": 0.0,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.9689808335812966,
+        "upper": 1.0
+      },
+      "localization_top1": 0.9416666666666667,
+      "localization_top3": 0.9416666666666667,
+      "avg_tokens_per_run": 8079.491666666667,
+      "avg_tokens_per_problem": 24238.475,
+      "latency_p50_ms": 4824.0,
+      "latency_p95_ms": 35769.44999999993,
+      "retry_success_rate": null,
+      "failure_count": 0,
+      "error_counts": {},
+      "error_distribution": {}
+    }
+  ],
+  "failure_clusters": [
+    {
+      "cluster_id": 0,
+      "run_ids": [
+        "mini-max_sublist_sum.traj-d153cbf74c",
+        "mini-shunting_yard.traj-a81d7d90af",
+        "mini-topological_ordering.traj-23cf913449"
+      ],
+      "size": 3,
+      "top_terms": [
+        "num",
+        "num num",
+        "path",
+        "node",
+        "input_data",
+        "expected",
+        "max_sublist_sum",
+        "node num"
+      ],
+      "category": "assertion_mismatch",
+      "representative_run_id": "mini-shunting_yard.traj-a81d7d90af"
+    },
+    {
+      "cluster_id": 1,
+      "run_ids": [
+        "mini-find_in_sorted.traj-ccc568543e"
+      ],
+      "size": 1,
+      "top_terms": [
+        "binsearch",
+        "num",
+        "num num",
+        "path in",
+        "python_programs",
+        "python_programs path",
+        "return",
+        "return binsearch"
+      ],
+      "category": "assertion_mismatch",
+      "representative_run_id": "mini-find_in_sorted.traj-ccc568543e"
+    },
+    {
+      "cluster_id": 2,
+      "run_ids": [
+        "mini-longest_common_subsequence.traj-1471f043ce"
+      ],
+      "size": 1,
+      "top_terms": [
+        "input_data",
+        "bcba",
+        "test_longest_common_subsequence",
+        "expected",
+        "input_data expected",
+        "______________",
+        "assert longest_common_subsequence",
+        "bbdab"
+      ],
+      "category": "assertion_mismatch",
+      "representative_run_id": "mini-longest_common_subsequence.traj-1471f043ce"
+    }
+  ],
+  "bad_cases": [
+    {
+      "agent_name": "mini-swe-agent",
+      "run_id": "mini-find_in_sorted.traj-ccc568543e",
+      "problem_id": "find_in_sorted",
+      "category": "assertion_mismatch",
+      "rationale": "修复位置命中 gold，但最终测试仍出现断言不一致。",
+      "trace_link": "traces/mini-find_in_sorted.traj-ccc568543e.json"
+    },
+    {
+      "agent_name": "mini-swe-agent",
+      "run_id": "mini-longest_common_subsequence.traj-1471f043ce",
+      "problem_id": "longest_common_subsequence",
+      "category": "assertion_mismatch",
+      "rationale": "修复位置命中 gold，但最终测试仍出现断言不一致。",
+      "trace_link": "traces/mini-longest_common_subsequence.traj-1471f043ce.json"
+    }
+  ],
+  "llm_audit": {
+    "sample_count": 0,
+    "agreement_count": 0,
+    "agreement_rate": null
+  },
+  "objective_metric": "最终 patch 应用到原始源码后，官方 pytest 全绿"
+}

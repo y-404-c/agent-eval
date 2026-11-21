@@ -71,6 +71,18 @@ class ReportGenerator:
 
         bad_cases = self._export_bad_cases(runs, attributions, report_dir)
         generated_at = datetime.now(timezone.utc)
+        grader_sources = sorted(
+            {run.metadata.get("objective_grader", "unknown") for run in runs}
+        )
+        if grader_sources == ["swebench-harness-v1"]:
+            objective_description = (
+                "主指标为 SWE-bench 官方 harness 在对应镜像容器内运行 "
+                "FAIL_TO_PASS/PASS_TO_PASS 的判定结果（resolved）；未使用 LLM 打分。"
+            )
+        else:
+            objective_description = (
+                "主指标为最终 patch 在原始源码副本上运行官方 pytest 的结果；未使用 LLM 打分。"
+            )
         payload: dict[str, Any] = {
             "experiment_id": experiment_id,
             "generated_at": generated_at.isoformat(),
@@ -82,7 +94,8 @@ class ReportGenerator:
             "failure_clusters": clusters,
             "bad_cases": bad_cases,
             "manual_audit": self.repository.audit_agreement(run_ids),
-            "objective_metric": "最终 patch 应用到原始源码后，官方 pytest 全绿",
+            "objective_metric": objective_description,
+            "objective_grader_sources": grader_sources,
         }
         (report_dir / "metrics.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -233,7 +246,7 @@ class ReportGenerator:
             f"数据集 SHA-256：`{payload['dataset_digest']}`  ",
             f"共同题目数：{len(payload['common_problem_ids'])}",
             "",
-            "> 主指标为最终 patch 在原始源码副本上运行官方 pytest 的结果；未使用 LLM 打分。",
+            f"> {payload['objective_metric']}",
             "> pass@k 的 k 是独立生成次数，Agent 内部重试不计入 k。"
             "延迟为步骤耗时，0/缺失值不参与分位数。",
             "",

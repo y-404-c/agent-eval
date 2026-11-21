@@ -1,0 +1,89 @@
+{
+  "experiment_id": "swebench-lite-harness-v1",
+  "generated_at": "2026-11-21T13:07:01.470590+00:00",
+  "dataset_digest": "2be4b05cf8e750c409b1c73c71c850d2d4f9afcf627aef501221c627f6973ce2",
+  "dataset_version": [
+    "SWE-bench-Lite/4.1",
+    "SWE-bench-Lite/5.2"
+  ],
+  "common_problem_ids": [
+    "django__django-14534",
+    "pytest-dev__pytest-6116"
+  ],
+  "warnings": [],
+  "metrics": [
+    {
+      "agent_name": "mini-swe-agent",
+      "strategy": "-",
+      "run_count": 2,
+      "problem_count": 2,
+      "repeat_count": 1,
+      "k": 3,
+      "pass_at_1": 0.5,
+      "pass_at_k": 0.5,
+      "repeat_pass_rates": [
+        0.5
+      ],
+      "mean_repeat_pass_rate": 0.5,
+      "repeat_pass_rate_variance": null,
+      "repeat_pass_rate_ci95": {
+        "lower": 0.09453120573423074,
+        "upper": 0.9054687942657693
+      },
+      "localization_top1": 0.0,
+      "localization_top3": 0.0,
+      "avg_tokens_per_run": 0.0,
+      "avg_tokens_per_problem": 0.0,
+      "latency_p50_ms": null,
+      "latency_p95_ms": null,
+      "retry_success_rate": null,
+      "failure_count": 1,
+      "error_counts": {
+        "regression": 1
+      },
+      "error_distribution": {
+        "regression": 1.0
+      }
+    }
+  ],
+  "failure_clusters": [
+    {
+      "cluster_id": 0,
+      "run_ids": [
+        "mini-pytest-6116.traj-54d476e08b"
+      ],
+      "size": 1,
+      "top_terms": [
+        "num",
+        "path",
+        "action_run_test",
+        "action_run_test action_run_test",
+        "failed",
+        "in",
+        "py",
+        "file"
+      ],
+      "category": "regression",
+      "representative_run_id": "mini-pytest-6116.traj-54d476e08b"
+    }
+  ],
+  "bad_cases": [
+    {
+      "agent_name": "mini-swe-agent",
+      "run_id": "mini-pytest-6116.traj-54d476e08b",
+      "problem_id": "pytest-dev__pytest-6116",
+      "category": "regression",
+      "rationale": "最终测试中既有历史失败消失，又出现了此前从未失败的新测试。",
+      "trace_link": "traces/mini-pytest-6116.traj-54d476e08b.json"
+    }
+  ],
+  "manual_audit": {
+    "sample_count": 1,
+    "agreement_count": 0,
+    "agreement_rate": 0.0
+  },
+  "objective_metric": "主指标为 SWE-bench 官方 harness 在对应镜像容器内运行 FAIL_TO_PASS/PASS_TO_PASS 的判定结果（resolved）；未使用 LLM 打分。",
+  "objective_grader_sources": [
+    "swebench-harness-v1"
+  ]
+}

@@ -93,7 +93,9 @@ class EvaluationService:
         metadata.update(
             {
                 "dataset_digest": self.dataset.digest,
-                "objective_grader": "official-pytest-v1",
+                "objective_grader": getattr(
+                    self.grader, "source_label", "official-pytest-v1"
+                ),
                 "objective_regrades": 1,
                 "logged_test_result": metadata.get(
                     "logged_test_result", original.test_result.value
